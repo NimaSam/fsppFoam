@@ -1,0 +1,4 @@
+fsppFoam.C
+fsppControl.C
+
+EXE = $(FOAM_USER_APPBIN)/fsppFoam

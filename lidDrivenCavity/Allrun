@@ -1,0 +1,12 @@
+# !/bin/sh
+cd "${0%/*}" || exit  # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions  # Tutorial run functions
+# ------------------------------------------------------------------------------
+
+blockMesh
+fsppFoam
+python3 postProcessing/plotResiduals.py
+python3 postProcessing/plotLidDrivenCavity.py 1000
+python3 postProcessing/printPerformance.py 
+
+# ------------------------------------------------------------------------------
