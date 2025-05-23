@@ -31,7 +31,7 @@ maxDeltaT         1;
 
 adjustTimeStep    yes;
 
-maxCo             50.0;
+maxCo             1.0;
 
 writeControl      adjustableRunTime;
 
