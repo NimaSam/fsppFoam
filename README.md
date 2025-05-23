@@ -54,4 +54,4 @@ This entry will work for ```simpleFoam```, ```pisoFoam```, ```icoFoam```, ```pim
 
 ## Known limitations
 
-The Rhie-Chow-like interpolation is implemented within the ```fsppFoam/pCorrection.H``` file on lines 6-10, and then used in the pressure poisson solver on lines 17-22. This type of coupling is inspired from the ```simpleFoam``` solver, but has shown to be somewhat unstable for high-Reynolds number flows at low y+ values (around y+=1).
+The Rhie-Chow-like interpolation is implemented within the ```fsppFoam/pCorrection.H``` file on lines 1-6, and then used in the pressure poisson solver on lines 13-18. This type of coupling is inspired from the ```simpleFoam``` solver, but has shown to be somewhat unstable for high-Reynolds number flows at low y+ values (around y+=1). This also causes stronger decoupling between pressure and velocity at highter CFL numbers.
