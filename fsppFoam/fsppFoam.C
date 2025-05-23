@@ -39,7 +39,7 @@ Description
 #include "fvCFD.H"
 #include "singlePhaseTransportModel.H"
 #include "turbulentTransportModel.H"
-#include "fsppControl.H"
+#include "pisoControl.H"
 #include "fvOptions.H"
 #include "localEulerDdtScheme.H"
 #include "fvcSmooth.H"
@@ -51,9 +51,9 @@ int main(int argc, char *argv[])
 {
     argList::addNote
     (
-        "Steady-state solver for incompressible, laminar flow of Newtonian fluids."
-        "Uses the unified Fractional-Step, Artifical Compressibility with"
-        "Pressure projection (FSAC-PP) method of Konozsy."
+        "Unsteady solver for incompressible, turbulent flow of Newtonian fluids."
+        "Uses the Fractional-Step, Pressure projection (FS-PP) method of Chorin."
+        "This solver is fully implicit."
     );
 
     #include "postProcess.H"
@@ -62,11 +62,8 @@ int main(int argc, char *argv[])
     #include "setRootCaseLists.H"
     #include "createTime.H"
     #include "createMesh.H"
-    
-    fsppControl fspp(mesh);
-
+    #include "createControl.H"
     #include "createFields.H"
-    #include "initContinuityErrs.H"
     #include "initContinuityErrs.H"
 
     turbulence->validate();
@@ -75,19 +72,21 @@ int main(int argc, char *argv[])
     #include "setInitialDeltaT.H"
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+    
     Info<< "\nStarting time loop\n" << endl;
 
-    while (fspp.loop())
+    while (runTime.loop())
     {
-        
         #include "CourantNo.H"
         #include "setDeltaT.H"
-
+        
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
+        // Update settings from the control dictionary
+        piso.read();
+        
         phi = (fvc::interpolate(U) & mesh.Sf());
-
+        
         fvVectorMatrix UEqn
         (
             fvm::ddt(U)
@@ -97,14 +96,14 @@ int main(int argc, char *argv[])
 
         // relax velocity field explicitly
         UEqn.relax();
-
+        
         UEqn.solve();
-
+        
         #include "pCorrection.H"
 
         laminarTransport.correct();
         turbulence->correct();
-
+        
         runTime.write();
 
         runTime.printExecutionTime(Info);
