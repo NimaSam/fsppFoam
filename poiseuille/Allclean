@@ -1,0 +1,12 @@
+# !/bin/sh
+cd "${0%/*}" || exit  # Run from this directory
+# ------------------------------------------------------------------------------
+
+rm -rf constant/polyMesh
+rm -rf 0.[0-9]* [1-9]* log logs processor*
+cd postProcessing/
+find . -type f -name '*.png' -delete
+find . -type d -exec rm -rf {} +
+cd ../
+
+# ------------------------------------------------------------------------------

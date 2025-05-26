@@ -1,0 +1,87 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+	version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     pimpleFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1;
+
+deltaT          0.001;
+
+writeControl    runTime;
+
+writeInterval   0.1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision   8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+
+    velocityProfile
+    {
+        type            probes;
+        libs            ("libsampling.so");
+        writeControl    timeStep;
+        writeInterval   20;
+
+        probeLocations
+        (
+            ( 0.8025 -0.04750000  0 )
+            ( 0.8025 -0.04236842  0 )
+            ( 0.8025 -0.03723684  0 )
+            ( 0.8025 -0.03210526  0 )
+            ( 0.8025 -0.02697368  0 )
+            ( 0.8025 -0.02184211  0 )
+            ( 0.8025 -0.01671053  0 )
+            ( 0.8025 -0.01157895  0 )
+            ( 0.8025 -0.00644737  0 )
+            ( 0.8025 -0.00131579  0 )
+            ( 0.8025  0.00381579  0 )
+            ( 0.8025  0.00894737  0 )
+            ( 0.8025  0.01407895  0 )
+            ( 0.8025  0.01921053  0 )
+            ( 0.8025  0.02434211  0 )
+            ( 0.8025  0.02947368  0 )
+            ( 0.8025  0.03460526  0 )
+            ( 0.8025  0.03973684  0 )
+            ( 0.8025  0.04486842  0 )
+            ( 0.8025  0.04750000  0 )
+        );
+
+        fields
+        (
+            U
+        );
+    }
+}
+// ************************************************************************* //
