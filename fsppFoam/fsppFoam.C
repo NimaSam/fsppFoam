@@ -38,11 +38,11 @@ Description
 
 #include "fvCFD.H"
 #include "singlePhaseTransportModel.H"
-#include "turbulentTransportModel.H"
+#include "turbulenceModel.H"
 #include "pisoControl.H"
-#include "fvOptions.H"
-#include "localEulerDdtScheme.H"
-#include "fvcSmooth.H"
+//#include "fvOptions.H"
+//#include "localEulerDdtScheme.H"
+//#include "fvcSmooth.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -56,17 +56,19 @@ int main(int argc, char *argv[])
         "This solver is fully implicit."
     );
 
-    #include "postProcess.H"
+    //#include "postProcess.H"
 
-    #include "addCheckCaseOptions.H"
-    #include "setRootCaseLists.H"
+    //#include "addCheckCaseOptions.H"
+    //#include "setRootCaseLists.H"
+    #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
-    #include "createControl.H"
+    //#include "createControl.H"
+    pisoControl piso(mesh);
     #include "createFields.H"
     #include "initContinuityErrs.H"
 
-    turbulence->validate();
+    //turbulence->validate();
 
     #include "CourantNo.H"
     #include "setInitialDeltaT.H"
@@ -78,12 +80,12 @@ int main(int argc, char *argv[])
     while (runTime.loop())
     {
         #include "CourantNo.H"
-        #include "setDeltaT.H"
+        //#include "setDeltaT.H"
         
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
         // Update settings from the control dictionary
-        piso.read();
+        //piso.read();
         
         phi = (fvc::interpolate(U) & mesh.Sf());
         
@@ -91,7 +93,8 @@ int main(int argc, char *argv[])
         (
             fvm::ddt(U)
           + fvm::div(phi, U)
-          + turbulence->divDevReff(U)
+          //+ turbulence->divDevReff(U)
+          + turbulence->divDevReff()
         );
 
         // relax velocity field explicitly
@@ -106,7 +109,9 @@ int main(int argc, char *argv[])
         
         runTime.write();
 
-        runTime.printExecutionTime(Info);
+        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+        << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+        << nl << endl;
     }
 
     Info<< "End\n" << endl;
