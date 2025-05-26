@@ -19,7 +19,7 @@ solvers
 {
     U
     {
-        solver           PBiCGStab;
+        solver           PBiCG;//stab;
         preconditioner   DILU;
         tolerance        1e-14;
         relTol           1e-06;
@@ -45,7 +45,7 @@ solvers
 
     nut
     {
-        solver           PBiCGStab;
+        solver           PBiCG;//Stab;
         preconditioner   DILU;
         tolerance        1e-14;
         relTol           1e-06;
@@ -58,7 +58,7 @@ solvers
 
     k
     {
-        solver           PBiCGStab;
+        solver           PBiCG;//Stab;
         preconditioner   DILU;
         tolerance        1e-14;
         relTol           1e-06;
@@ -71,7 +71,7 @@ solvers
 
     omega
     {
-        solver           PBiCGStab;
+        solver           PBiCG;//Stab;
         preconditioner   DILU;
         tolerance        1e-14;
         relTol           1e-06;
